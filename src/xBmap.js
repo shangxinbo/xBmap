@@ -2,7 +2,7 @@
  * 针对百度地图2.0的封装类
  * 密钥 ： GVuY6GVT5TYhZ69f3RCNviSY
  */
-var lsBmap = function(obj){
+var xBmap = function(obj){
     //obj 初始化对象参数
     //必填参数
     this.id =  obj.id ;
@@ -38,7 +38,7 @@ var lsBmap = function(obj){
     this.map.enableScrollWheelZoom(this.enableScroll);              //开启鼠标滚轮缩放
 } 
 
-lsBmap.prototype = {
+xBmap.prototype = {
 
     //移动地图
     //@param lat 经度

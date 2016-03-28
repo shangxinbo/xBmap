@@ -4,22 +4,13 @@
 <script src="jquery.min.js"></script>
 </head>
 <body>
-<div id="uploader" style="width:200px; height:40px; text-align: center;">点我上传</div>
-<script src="../dist/xUpload.min.js"></script>
+<div id="map1" style="width:700px;height:500px;margin: 0 auto;"></div>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=GVuY6GVT5TYhZ69f3RCNviSY" type="text/javascript"></script>
+<script src="../src/xBmap.js"></script>
 <script>
 $(function(){
-    $('#uploader').xUpload({
-        onSelect: function(){
-            console.log('select');
-        },
-        accept: 'application/pdf',
-        maxSize: 4000000,
-        onError: function(error){
-            console.log(error);
-        },
-        onSuccess: function(){
-            console.log(2);
-        }
+    var map1 = new xBmap({
+        id : 'map1'
     });
 })
 </script>
