@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="utf8" />
+<script src="jquery.min.js"></script>
+</head>
+<body>
+<div id="uploader" style="width:200px; height:40px; text-align: center;">点我上传</div>
+<script src="../dist/xUpload.min.js"></script>
+<script>
+$(function(){
+    $('#uploader').xUpload({
+        onSelect: function(){
+            console.log('select');
+        },
+        accept: 'application/pdf',
+        maxSize: 4000000,
+        onError: function(error){
+            console.log(error);
+        },
+        onSuccess: function(){
+            console.log(2);
+        }
+    });
+})
+</script>
+</body>
+</html>
