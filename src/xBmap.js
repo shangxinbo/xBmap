@@ -18,7 +18,8 @@
         //必填参数
         this.container = obj.container;         //可以是元素也可以是元素id
         this.lat = obj.lat;          //纬度
-        this.lon = obj.lon;          //经度   
+        this.lon = obj.lon;          //经度  
+        this.location = obj.location; 
 
         //选填参数
         this.enableScroll = obj.enableScroll?obj.enableScroll:true;     //地图开启滚轮放大缩小
@@ -27,10 +28,12 @@
         this.maxZoom = obj.maxZoom;                     //地图的最大级别
         this.enableMapClick = obj.enableClick;          //地图上图标是否可点击
         
-        if(this.container&&this.lat&&this.lon){
-            this.init();
+        if(this.container){
+            
+                this.init();
+            
         }else{
-            console.error('container,lat,lon is required');
+            console.error('container is required');
         }
     } ;
 
@@ -43,13 +46,44 @@
                 minZoom:this.minZoom,
                 maxZoom:this.maxZoom,
                 enableMapClick:this.enableMapClick
-            });    
-
-            this.map.centerAndZoom(new BMap.Point(this.lat, this.lon), this.lev);      // 初始化地图,设置中心点坐标和地图级别
-            
+            });  
+            if(this.lat&&this.lon){
+                this.map.centerAndZoom(new BMap.Point(this.lat, this.lon), this.lev);      // 初始化地图,设置中心点坐标和地图级别
+            }else{
+                this.geocorder();   
+            }  
+  
             if(this.enableScroll){
                 this.map.enableScrollWheelZoom();                         //开启鼠标滚轮缩放，官网实例有误
-            }  
+            }     
+        },
+        setCity : function(city){
+            map.centerAndZoom(city,this.lev);      // 初始化地图,用城市名设置地图中心点
+        }
+        /*
+         * 地址编码
+         */
+        geocorder: function(){
+            var _this = this;
+            var myGeo = new BMap.Geocoder();      
+            // 将地址解析结果显示在地图上，并调整地图视野    
+            myGeo.getPoint(this.location, function(point){      
+                if (point) {      
+                    _this.map.centerAndZoom(point, _this.lev);  
+                }      
+            });   
+        },
+        /*
+         * 反向地址编码
+         */
+        getlocation : function(point){
+            var myGeo = new BMap.Geocoder();      
+            // 根据坐标得到地址描述    
+            myGeo.getLocation(point, function(result){      
+                if (result){      
+                 alert(result.address);      
+                }  
+            });  
         },
         /*
          * 移动地图到指定坐标
@@ -98,8 +132,10 @@
             var newMarker = new BMap.Marker(new BMap.Point(this.lat, this.lon),{icon:icon});
             this.map.addOverlay(newMarker);
             var infoWindow = new BMap.InfoWindow(dom, { height: 150, width: 300, overflow:'auto'});
-        
-            newMarker.openInfoWindow(infoWindow); 
+            
+            newMarker.addEventListener("click", function(){    
+                newMarker.openInfoWindow(infoWindow); 
+            }); 
             //this.map.enableScrollWheelZoom();
         },
 
@@ -110,7 +146,7 @@
          * param lat,lan  图标显示坐标点
          * param anchor   图标偏移量 
          */
-        addMarker : function(point,callback,infoWindow){
+        addMarker : function(point,callback){
             var icon = new BMap.Icon(point.url, new BMap.Size(point.width, point.height),{
                     anchor: new BMap.Size(point.anchor.left, point.anchor.top)       // 设置图片偏移 
                 });
@@ -121,8 +157,17 @@
                 });
             }
             this.map.addOverlay(marker);
-        } 
+        },
+
+        /*
+         * 添加交通图层
+         */ 
+        addTrafficLayer : function(){
+            var traffic = new BMap.TrafficLayer();
+            this.map.addTileLayer(traffic);      
+        }
     };
+
 
     window.xBmap = xBmap;
 })(window);
