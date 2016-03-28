@@ -4,14 +4,31 @@
 <script src="jquery.min.js"></script>
 </head>
 <body>
-<div id="map1" style="width:700px;height:500px;margin: 0 auto;"></div>
-<script src="http://api.map.baidu.com/api?v=2.0&ak=GVuY6GVT5TYhZ69f3RCNviSY" type="text/javascript"></script>
+<div class="map1" style="width:700px;height:500px;margin: 0 auto;"></div>
 <script src="../src/xBmap.js"></script>
 <script>
 $(function(){
     var map1 = new xBmap({
-        id : 'map1'
+        container : $('.map1')[0],
+        lat: 116.443255,
+        lon: 39.946172,
+        lev: 17,
+        enableScroll: true
     });
+    map1.addMarker({
+        url: 'map-icon.png',
+        lat: 116.443255,
+        lon: 39.946172,
+        width:23,
+        height:29,
+        anchor:{
+            left:11,
+            top:40
+        }
+    },function(event){
+        console.log('点击marker后的触发事件');
+    });
+    map1.addinfoWindow('<div>我就是我</div>');
 })
 </script>
 </body>
