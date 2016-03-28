@@ -90,13 +90,16 @@
             this.map.addControl(navigation); 
         },
 
-        //添加商家信息
-        addinfoWindow:function(dom){
-            //var newMarker = new BMap.Marker(new BMap.Point(this.lat, this.lon),{icon:this.icon,title:'asdfas'});
-            //this.map.addOverlay(newMarker);
+        //添加信息框
+        addinfoWindow:function(point,dom){
+            var icon = new BMap.Icon(point.url, new BMap.Size(point.width, point.height),{
+                    anchor: new BMap.Size(point.anchor.left, point.anchor.top)       // 设置图片偏移 
+                });
+            var newMarker = new BMap.Marker(new BMap.Point(this.lat, this.lon),{icon:icon});
+            this.map.addOverlay(newMarker);
             var infoWindow = new BMap.InfoWindow(dom, { height: 150, width: 300, overflow:'auto'});
         
-            this.map.openInfoWindow(infoWindow, this.map.getCenter()); 
+            newMarker.openInfoWindow(infoWindow); 
             //this.map.enableScrollWheelZoom();
         },
 
@@ -107,7 +110,7 @@
          * param lat,lan  图标显示坐标点
          * param anchor   图标偏移量 
          */
-        addMarker : function(point,callback){
+        addMarker : function(point,callback,infoWindow){
             var icon = new BMap.Icon(point.url, new BMap.Size(point.width, point.height),{
                     anchor: new BMap.Size(point.anchor.left, point.anchor.top)       // 设置图片偏移 
                 });
